@@ -1,4 +1,4 @@
-# interview_material
+# A bit of background
 
 This is some dummy code for reading object schemas (sort of like JSON-ld) for different item types from s3 and then traversing given metadata using those schemas. An example schema:
 
