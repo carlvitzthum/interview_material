@@ -59,6 +59,6 @@ Some example data:
 }
 ```
 
-Given a starting object, the code in `crawl.py` tries to get the given resource by `@id` and then traverse the object and return the value of a field given by an input path, such as `'car_owned.car.years_owned'` when starting with a `user` object. In the case of an array, return all values of the array (i.e. the result of using `'car_owned.car.designer.friends.name'`).
+Given a starting object, the code in `crawl.py` tries to get the given resource by `@id` and then traverse the object and return the value of a field given by an input path, such as `'car_owned.car.model'` when starting with a `user` object. In the case of an array, return all values of the array (i.e. the result of using `'car_owned.car.designer.friends.name'`).
 
 Assume that you have schemas stored in s3 that are named based off the the `@type` field, for example `user.json`. 
