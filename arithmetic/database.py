@@ -30,14 +30,14 @@ class ArithmeticDatabase(object):
             self.write(self.headers)
 
     @contextmanager
-    def open_write(self):
+    def open_csv(self):
         """
         Use a contextmanager to yield the csv.writer object
 
         Yields:
             csv.writer() object
         """
-        csv_file = open(self.filepath, mode='w', newline='')
+        csv_file = open(self.filepath, mode='a+', newline='')
         yield csv.writer(csv_file, delimiter=',')
         csv_file.close()
 
@@ -48,7 +48,7 @@ class ArithmeticDatabase(object):
         Args:
             row (list): list of elements to write in the row
         """
-        with self.open_write() as csv_file:
+        with self.open_csv() as csv_file:
             csv_file.writerows([row])
 
     def print_all(self):
