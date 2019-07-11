@@ -20,6 +20,9 @@ Your job is to review the code and do the following:
 If there is time, we may ask how you would further improve the code with additional features and overall architecture.
 
 This code leverages several builtin Python libraries, a few of which are linked below:
+
 [csv](https://docs.python.org/3/library/csv.html)
+
 [contextlib](https://docs.python.org/3/library/contextlib.html)
+
 [argparse](https://docs.python.org/3/library/argparse.html)
