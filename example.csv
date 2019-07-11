@@ -1,0 +1,8 @@
+operator,int1,int2,answer
+add,1,2,3
+add,4,5,9
+subtract,4,3,1
+multiply,1,4,4
+multiply,1,5,5
+multiply,2,6,12
+divide,8,2,4
