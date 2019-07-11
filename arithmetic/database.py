@@ -5,7 +5,7 @@ from contextlib import contextmanager
 class ArithmeticDatabase(object):
     """
     A simple database backed by a csv file to contain arithmetic operations
-    with two integers and the corresponding answers
+    with two integers
     """
     headers = ['operator', 'int1', 'int2', 'answer']
     operators = ['add', 'subtract', 'multiply', 'divide']
@@ -37,7 +37,7 @@ class ArithmeticDatabase(object):
         Yields:
             csv.writer() object
         """
-        csv_file = open(self.filepath, mode='a+', newline='')
+        csv_file = open(self.filepath, mode='a', newline='')
         yield csv.writer(csv_file, delimiter=',')
         csv_file.close()
 
@@ -49,7 +49,7 @@ class ArithmeticDatabase(object):
             row (list): list of elements to write in the row
         """
         with self.open_csv() as csv_file:
-            csv_file.writerows([row])
+            csv_file.writerow(row)
 
     def print_all(self):
         """
