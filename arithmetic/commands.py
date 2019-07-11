@@ -37,7 +37,7 @@ def write_arithmetic(filename, operator, a, b):
     csv file with the given filename
     """
     answer = do_arithmetic(operator, a, b)
-    db = ArithmeticDatabase(test_csv, use_existing=True)
+    db = ArithmeticDatabase(filename, use_existing=True)
     db.write([operator, a, b, answer])
     db.print_all()
 
