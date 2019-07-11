@@ -46,6 +46,8 @@ def write_multiplication_table(filename):
     """
     Write a large multiplication table to a ArithmeticDatabase backed by a
     csv file with the given filename
+
+    TODO: Why is this taking so long?
     """
     db = ArithmeticDatabase('test.csv', use_existing=True)
     for a in range(10000):

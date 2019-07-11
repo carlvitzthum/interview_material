@@ -50,6 +50,7 @@ class ArithmeticDatabase(object):
     def validate(self, row):
         """
         Validate the everything about the given row is correct.
+        
         TODO: enough validation cases?
 
         Args:
