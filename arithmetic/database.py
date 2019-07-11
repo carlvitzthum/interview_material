@@ -29,28 +29,33 @@ class ArithmeticDatabase(object):
         else:
             self.write(self.headers)
 
-
     @contextmanager
-    def open_write(self):
+    def open_csv(self):
         """
         Use a contextmanager to yield the csv.writer object
 
         Yields:
             csv.writer() object
         """
-        csv_file = open(self.filepath, mode='w', newline='')
+        csv_file = open(self.filepath, mode='a', newline='')
         yield csv.writer(csv_file, delimiter=',')
         csv_file.close()
 
     @contextmanager
     def open_read(self):
-        csv_file = open(self.filepath, mode='r', newline='')
+        """
+        Use a contextmanager to yield the csv.reader object
+
+        Yields:
+            csv.writer() object
+        """
+        csv_file = open(self.filepath, mode='r+', newline='')
         yield csv.reader(csv_file, delimiter=',')
 
     def validate(self, row):
         """
         Validate the everything about the given row is correct.
-        
+
         TODO: enough validation cases?
 
         Args:
@@ -63,7 +68,7 @@ class ArithmeticDatabase(object):
             return False
         return True
 
-    def write(self, row, validate=True, read_first=True):
+    def write(self, row, validate=True):
         """
         Write the given row to the csv. Can optionally validate the row using
         the `self.validate` method
@@ -71,8 +76,6 @@ class ArithmeticDatabase(object):
         Args:
             row (list): list of elements to write in the row
             validate (bool): whether to validate the row. Default False
-            read_first (bool): if True, read the existing contents of the file
-                to include in the write. Set to False on initial write
 
         Raises:
             Exception: if validation fails
@@ -80,15 +83,8 @@ class ArithmeticDatabase(object):
         if validate and not self.validate(row):
             raise Exception('Cannot write row as it fails validation: %s' % row)
 
-        # writerow overwrites the entire csv. must read in prior contents
-        if read_first:
-            all_rows = self.read_all()
-        else:
-            all_rows = []
-        all_rows.append(row)
-
-        with self.open_write() as csv_file:
-            csv_file.writerows(all_rows)
+        with self.open_csv() as csv_file:
+            csv_file.writerow(row)
 
     def read_all(self):
         """
@@ -103,20 +99,31 @@ class ArithmeticDatabase(object):
 
     def readRow(self, row_idx):
         """
-        Read and return row in the csv of index given by row_idx
+        Read and return row in the csv of index given by `row_idx`
 
         Args:
             row_idx (int): index of row to read in file
         """
-        found = False
         all_rows = self.read_all()
-        csv_file = self.open_read()
-        for idx in csv_file:
-            if row_idx == csv_file.line_num:
-                found = True
-        if not Found:
-            raise Exception('Cannot read row idx %s since it exceeds length of the csv' % row_idx)
-        return all_rows[row_idx]
+        for idx, row in enumerate(all_rows):
+            if row_idx == idx:
+                return row
+        raise Exception('Cannot read row idx %s since it exceeds length of the csv' % row_idx)
+
+    def read_rows_by_indices(self, row_indices):
+        """
+        Given a list of row indices, return all of the corresponding rows in order
+
+        Args:
+            row_indices (list): the indices to read and return from file
+
+        Returns:
+            list: of rows
+        """
+        found = []
+        for row_idx in row_indices:
+            found.append(self.readRow(row_idx))
+        return found
 
     def print_all(self):
         """
@@ -125,9 +132,3 @@ class ArithmeticDatabase(object):
         with self.open_read() as csv_file:
             for row in csv_file:
                 print(row)
-
-    def get_lines_with_answer(self, answer):
-        """
-        Return a list of all rows in the csv that have given answer
-        """
-        raise NotImplementedError
