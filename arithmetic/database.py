@@ -55,6 +55,6 @@ class ArithmeticDatabase(object):
         """
         Print all rows in the csv
         """
-        with self.open_read() as csv_file:
-            for row in csv_file:
-                print(row)
+        with open(self.filepath) as csv_file:
+            for line in csv_file.readlines():
+                print(line.strip())
