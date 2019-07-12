@@ -8,7 +8,7 @@ Let's say we want to create a simple database to hold arithmetic operations (add
 
 Additionally, `example.csv` is what a csv written by this program might look like.
 
-In this scenario, some code has already been committed for the `ArithmeticDatabase` class -- specifically, the initialization and writing methods. We also have a basic command and command-line interface. Now your colleague is submitting a pull request (PR) to add some more functionality to this code. Coding style is subjective, but assume that the pre-existing code (i.e. before the pull request) is styled satisfactorily. We are following [this guide](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html) for docstrings. As written, this code should be run using **Python 3**.
+Code has already been committed for the desired commands. We also have a basic command and command-line interface. Now your colleague is submitting a pull request (PR) to actually create the `ArithmeticDatabase` class. Coding style is subjective, but assume that the pre-existing code (i.e. before the pull request) is styled satisfactorily. We are following [this guide](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html) for docstrings. As written, this code should be run using **Python 3**.
 
 Your job is to review the code and do the following:
 
