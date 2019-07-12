@@ -18,17 +18,17 @@ def do_arithmetic(operator, a, b):
         KeyError if the operator is invalid
     """
     operators = {
-        'add': a + b,
-        'subtract': a - b,
-        'multiply': a * b,
-        'divide': a / b
+        'add': lambda a, b: a + b,
+        'subtract': lambda a, b: a - b,
+        'multiply': lambda a, b: a * b,
+        'divide': lambda: a, b: a / b
     }
     try:
-        return operators[operator]
+        return operators[operator](a,b)
     except:
         valid_keys = ', '.join(operators.keys())
         err_msg = 'Operator %s is not valid! Must be one of: %s' % (operator, valid_keys)
-        return KeyError(err_msg)
+        raise KeyError(err_msg)
 
 
 def write_arithmetic(filename, operator, a, b):
@@ -45,13 +45,11 @@ def write_arithmetic(filename, operator, a, b):
 def write_multiplication_table(filename):
     """
     Write a large multiplication table to a ArithmeticDatabase backed by a
-    csv file with the given filename
-
-    TODO: Optimize speed?
+    csv file with the given filename. Use a buffer.
     """
-    db = ArithmeticDatabase('test.csv', use_existing=True)
-    for a in range(10000):
-        for b in range(10000):
+    db = ArithmeticDatabase(filename, use_existing=True)
+    for a in range(1, 10000):
+        for b in range(1, 10000):
             answer = do_arithmetic('multiply', a, b)
-            db.write(['multiply', a, b, answer])
+            db.buffered_write(['multiply', a, b, answer])
     db.print_all()
