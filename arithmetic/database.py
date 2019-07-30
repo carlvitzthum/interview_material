@@ -58,8 +58,6 @@ class ArithmeticDatabase(object):
         """
         Validate the everything about the given row is correct.
 
-        TODO: enough validation cases?
-
         Args:
             row (list): list of elements to write in the row
 
@@ -111,7 +109,36 @@ class ArithmeticDatabase(object):
             # clean up the buffer
             del buffer
 
-    def read_all(self):
+    def write_entire_buffer_mp(self, validate=True):
+        """
+        Write all rows from the aforementioned buffer above using
+        multiprocessing for some sweet performance increases!
+
+        Args:
+            validate (bool): whether to validate the row. Default False
+
+        Raises:
+            Exception: if validation fails
+        """
+        import multiprocessing
+
+        workers = []
+        def worker_write_func(this_obj, this_buffer):
+            """
+            Function used by individual processes
+            """
+            while len(this_buffer) > 0:
+                row = this_buffer.pop()
+                this_obj.write(row, validate=True)
+
+        # number of processes
+        for i in range(10):
+            p = multiprocessing.Process(target=worker_write_func,
+                                        args=(self, buffer))
+            workers.append(p)
+            p.start()
+
+    def readAll(self):
         """
         Read all rows from the csv file and return them
 
@@ -122,32 +149,19 @@ class ArithmeticDatabase(object):
             all_rows = [row for row in csv_file]
         return all_rows
 
-    def readRow(self, row_idx):
+    def read_rows_by_indices(self, row_indices):
         """
         Read and return row in the csv of index given by `row_idx`
 
         Args:
-            row_idx (int): index of row to read in file
-        """
-        all_rows = self.read_all()
-        for idx, row in enumerate(all_rows):
-            if row_idx == idx:
-                return row
-        raise Exception('Cannot read row idx %s since it exceeds length of the csv' % row_idx)
-
-    def read_rows_by_indices(self, row_indices):
-        """
-        Given a list of row indices, return all of the corresponding rows in order
-
-        Args:
-            row_indices (list): the indices to read and return from file
-
-        Returns:
-            list: of rows
+            row_idx (list): list of int row indices to return from the file
         """
         found = []
-        for row_idx in row_indices:
-            found.append(self.readRow(row_idx))
+        all_rows = self.read_all()
+        for idx, row in enumerate(all_rows):
+            for row in row_indices:
+                if row_idx == idx:
+                    found.append(row)
         return found
 
     def print_all(self):
